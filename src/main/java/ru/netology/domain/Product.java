@@ -13,6 +13,14 @@ public class Product {
     protected String name;
     protected double cost;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public boolean matches(String query) {
         if (getName().contains(query)) {
             return true;

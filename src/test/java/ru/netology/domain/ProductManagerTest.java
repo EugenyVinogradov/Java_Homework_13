@@ -106,4 +106,19 @@ public class ProductManagerTest {
         ProductManager manager = new ProductManager(repository);
         Assertions.assertThrows(NotFoundByIdException.class, () -> manager.removedById(310));
     }
+
+    @Test
+    public void checkAddNewProduct() {
+        ProductManager manager = new ProductManager(repository);
+        manager.add(newBook);
+        Product[] expected = new Product[]{book1, book2, book3, smartphone1, smartphone2, smartphone3, newBook};
+        Product[] actual = repository.findAll();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void checkAlreadyExistException() {
+        ProductManager manager = new ProductManager(repository);
+        Assertions.assertThrows(AlreadyExistsException.class, () -> manager.add(book2));
+    }
 }

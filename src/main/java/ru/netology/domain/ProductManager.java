@@ -12,7 +12,11 @@ public class ProductManager {
     protected Repository repository = new Repository();
 
     public void add(Product newProduct) {
-        repository.save(newProduct);
+        if (findById(newProduct.getId()) == null) {
+            repository.save(newProduct);
+        } else {
+            throw new AlreadyExistsException("Element with id: " + newProduct.getId() + " already have");
+        }
     }
 
     public Product[] searchByQuery(String query) {
