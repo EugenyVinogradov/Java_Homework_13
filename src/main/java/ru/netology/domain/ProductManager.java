@@ -11,15 +11,6 @@ import lombok.NoArgsConstructor;
 public class ProductManager {
     protected Repository repository = new Repository();
 
-
-//    public boolean matches(Product product, String query) {
-//        if (product.getName().contains(query)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     public void add(Product newProduct) {
         repository.save(newProduct);
     }
@@ -37,6 +28,35 @@ public class ProductManager {
             }
         }
         return result;
+    }
+
+    public Product[] findById(int id) {
+        Product[] tmp = new Product[1];
+        for (Product product : repository.findAll()) {
+            if (id == product.getId()) {
+                tmp[0] = product;
+                return tmp;
+            }
+        }
+        return null;
+    }
+
+    public void removedById(int id) {
+
+        Product[] tmp = new Product[repository.products.length - 1];
+        if (findById(id) != null) {
+            int index = 0;
+            for (Product product : repository.findAll()) {
+                if (id != product.getId()) {
+                    tmp[index] = product;
+                    index++;
+                }
+                repository.products = tmp;
+            }
+        } else {
+            throw new NotFoundByIdException("Element with id: " + id + " not found");
+
+        }
     }
 
 }

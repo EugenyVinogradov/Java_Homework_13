@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Data
 
@@ -60,7 +62,7 @@ public class ProductManagerTest {
     }
 
     @Test
-    public void checkRemoveFindById() {
+    public void checkRemoveById() {
         Product[] actual = repository.removeById(3);
         Product[] expected = new Product[]{book1, book2, smartphone1, smartphone2, smartphone3};
         Assertions.assertArrayEquals(expected, actual);
@@ -81,5 +83,27 @@ public class ProductManagerTest {
         Product[] expected = manager.searchByQuery("s");
         Product[] actual = new Product[]{book1, book3, smartphone3};
         assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void checkFindById() {
+        ProductManager manager = new ProductManager(repository);
+        Product[] expected = manager.findById(3);
+        Product[] actual = {book3};
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void checkRemoveByIdManager() {
+        ProductManager manager = new ProductManager(repository);
+        manager.removedById(3);
+        Product[] expected = new Product[]{book1, book2, smartphone1, smartphone2, smartphone3};
+        Product[] actual = repository.findAll();
+    }
+
+    @Test
+    public void checkNotFoundException() {
+        ProductManager manager = new ProductManager(repository);
+        Assertions.assertThrows(NotFoundByIdException.class, () -> manager.removedById(310));
     }
 }
